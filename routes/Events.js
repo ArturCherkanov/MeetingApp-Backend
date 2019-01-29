@@ -1,20 +1,25 @@
 const express = require("express");
-const Data = require("../models/data");
-const app = express();
 const router = express.Router();
-app.use("/api", router);
+const bodyParser = require("body-parser");
+const assert = require("assert");
 
+const Events = require("../models/Events");
 
-router.get("/getData", (req, res) => {
-    Data.find((err, data) => {
+router.get("/get", (req, res) => {
+    Events.find((err, data) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: data });
     });
 });
 
+
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json())
+
 router.post("/putData", (req, res) => {
-    let data = new Data();
-    const { time, message } = req.body;
+    const event = new Events(),
+    { time, message } = req.body;
+    
     if (!message || !time) {
         return res.json({
             success: false,
@@ -22,11 +27,16 @@ router.post("/putData", (req, res) => {
         });
     }
 
-    data.message = message;
-    data.time = time;
+    event.message = message;
+    event.time = time;
 
-    data.save(err => {
+    saveEventPromise = event.save();
+
+    assert.ok(saveEventPromise instanceof Promise)
+
+    saveEventPromise.then(()=>{return res.json({ success: true })}).catch(err => {
         if (err) return res.json({ success: false, error: err });
-        return res.json({ success: true });
-    });
-});
+        });
+})
+
+module.exports = router;

@@ -1,12 +1,8 @@
 const express = require("express");
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const User = require("../models/user");
+const User = require("../models/User");
 require('../password-config');
-const app = express();
-const router = express.Router();
-
-app.use("/api", router);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

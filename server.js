@@ -6,7 +6,6 @@ const express = require("express");
 
 const API_PORT = 3001;
 const app = express();
-const router = express.Router();
 
 // this is our MongoDB database
 const dbRoute = "mongodb://localhost/Events";
@@ -19,15 +18,15 @@ mongoose.connect(
 mongoose.set('useCreateIndex', true);
 
 
-let db = mongoose.connection;
+const db = mongoose.connection;
 
 db.once("open", () => console.log("connected to the database"));
 
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-require('./routes/Events');
+db.on("error",  () => console.error("MongoDB connection error:"));
+const routes = require('./routes');
 // require('./routes/Users');
 
-app.use("/api", router);
+app.use("/api", routes);
 
 
 
