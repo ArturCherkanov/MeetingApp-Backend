@@ -24,7 +24,6 @@ db.once("open", () => console.log("connected to the database"));
 
 db.on("error",  () => console.error("MongoDB connection error:"));
 const routes = require('./routes');
-// require('./routes/Users');
 
 app.use("/api", routes);
 
