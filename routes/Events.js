@@ -5,7 +5,7 @@ const assert = require("assert");
 
 const Events = require("../models/Events");
 
-router.get("/get", (req, res) => {
+router.get("/", (req, res) => {
     Events.find((err, data) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: data });
@@ -16,7 +16,7 @@ router.get("/get", (req, res) => {
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json())
 
-router.post("/putData", (req, res) => {
+router.post("/", (req, res) => {
     const event = new Events(),
     { time, message } = req.body;
     
