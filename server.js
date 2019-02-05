@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const bodyParser = require("body-parser");
+const passport  = require("passport");
+
 // const session = require("express-session");
 // const fileStore = require("session-file-store")(session)
 
@@ -26,9 +29,9 @@ db.on("error",  () => console.error("MongoDB connection error:"));
 const routes = require('./routes');
 
 app.use(passport.initialize());
-app.use("/api", routes);
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use("/api", routes);
 
 
 
