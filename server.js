@@ -25,7 +25,9 @@ db.once("open", () => console.log("connected to the database"));
 db.on("error",  () => console.error("MongoDB connection error:"));
 const routes = require('./routes');
 
+app.use(passport.initialize());
 app.use("/api", routes);
+app.use(express.json());
 
 
 

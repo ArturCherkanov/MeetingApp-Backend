@@ -1,9 +1,9 @@
-const passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
-    JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt,
-    User = require('./user'),
-    bcrypt = require('bcrypt'),
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const User = require('./user');
+const bcrypt = require('bcrypt');
 
     opts = {};
 

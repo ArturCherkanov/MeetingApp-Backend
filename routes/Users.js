@@ -1,16 +1,15 @@
 const express = require("express");
 const passport = require('passport');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const User = require("../models/User");
 require('../password-config');
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 router.post("/create", (req, res) => {
 
-    let { username, password } = req.body,
-        user = new User();
+    const { username, password } = req.body;
+    const user = new User();
 
     if (!username || !password) {
         return res.json({
@@ -19,8 +18,8 @@ router.post("/create", (req, res) => {
         });
     }
 
-    let salt = bcrypt.genSaltSync(10),
-        hash = bcrypt.hashSync(password, salt);
+const secret = 'abcdefg';
+const hash = crypto.createHmac(password, secret)
 
     user.password = hash;
     user.username = username;
@@ -36,7 +35,6 @@ router.post("/create", (req, res) => {
 
 
 
-app.use(passport.initialize());
 
 router.get('/login', (req, res, next) => {
     passport.authenticate('token', function (err, user, info) {
