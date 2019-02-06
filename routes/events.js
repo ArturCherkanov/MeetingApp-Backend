@@ -1,21 +1,21 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 // const bodyParser = require("body-parser");
-const assert = require("assert");
+// const assert = require('assert');
 
-const Events = require("../models/Events");
-// to do 
-router.get("/", (req, res) => {
+const Events = require('../models/Events');
+// to do
+router.get('/', (req, res) => {
     Events.find((err, data) => {
         if (err) return res.status(400).end();
-        return res.status(201).end(res.json({data: data}));
+        return res.json({ data: data });
     });
 });
 
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
     const event = new Events(),
-    { time, message } = req.body;
-    
+        { time, message } = req.body;
+
     if (!message || !time) {
         return res.status(400).end();
     }
@@ -23,13 +23,13 @@ router.post("/", (req, res) => {
     event.message = message;
     event.time = time;
 
-    saveEventPromise = event.save();
+    // saveEventPromise = event.save();
 
-    assert.ok(saveEventPromise instanceof Promise)
+    // assert.ok(saveEventPromise instanceof Promise);
 
-    saveEventPromise.then(()=>{return res.status(201)}).catch(err => {
+    event.save().then(() => res.status(201)).catch(err => {
         if (err) return res.status(400).end();
-        });
-})
+    });
+});
 
 module.exports = router;

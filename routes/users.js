@@ -1,12 +1,13 @@
-const express = require("express");
+const express = require('express');
 const passport = require('passport');
 const crypto = require('crypto');
-const User = require("../models/User");
+const User = require('../models/User');
+const router = express.Router();
+
 require('../password-config');
 
-app.use(express.urlencoded({ extended: false }));
 
-router.post("/create", (req, res) => {
+router.post('/create', (req, res) => {
 
     const { username, password } = req.body;
     const user = new User();
@@ -14,19 +15,20 @@ router.post("/create", (req, res) => {
     if (!username || !password) {
         return res.json({
             success: false,
-            error: "INVALID INPUTS"
+            error: 'INVALID INPUTS',
         });
     }
 
-const secret = 'abcdefg';
-const hash = crypto.createHmac(password, secret)
+    const secret = 'abcdefg';
+    const hash = crypto.createHmac(password, secret);
 
     user.password = hash;
     user.username = username;
 
     user.save(err => {
         if (err) {
-            return res.json({ success: false, error: err });
+            return res.json({ success: false,
+                error: err });
         }
         return res.json({ success: true });
     });
