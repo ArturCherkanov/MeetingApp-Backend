@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
-// const bodyParser = require("body-parser");
+const middleware = require('../token-middleware');
 // const assert = require('assert');
 
 const Events = require('../models/Events');
-// to do
+
 router.get('/', (req, res) => {
     Events.find((err, data) => {
-        if (err) return res.status(400).end();
+        if (err) {return res.status(400).end()};
         return res.json({ data: data });
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', middleware.checkToken, (req, res) => {
     const event = new Events(),
         { time, message } = req.body;
 
