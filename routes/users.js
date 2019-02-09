@@ -1,34 +1,35 @@
 const express = require('express');
+const router = express.Router();
 const passport = require('passport');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+
 const User = require('../models/User');
-const router = express.Router();
+const middleware = require('../token-middleware');
+const app = express();
 
-require('../password-config');
-
-
-router.post('/create', (req, res) => {
-
+router.post('/', (req, res) => {
     const { username, password } = req.body;
     const user = new User();
 
     if (!username || !password) {
-        return res.json({
-            success: false,
-            error: 'INVALID INPUTS',
-        });
+        return res.status(400);
     }
 
-    const secret = 'abcdefg';
-    const hash = crypto.createHmac(password, secret);
 
+    const hash = crypto.createHmac('sha256', password)
+        .update('I love cupcakes')
+        .digest('hex');
+    console.log(hash);
     user.password = hash;
     user.username = username;
 
     user.save(err => {
         if (err) {
-            return res.json({ success: false,
-                error: err });
+            return res.json({
+                success: false,
+                error: err
+            });
         }
         return res.json({ success: true });
     });
@@ -37,18 +38,28 @@ router.post('/create', (req, res) => {
 
 
 
-
-router.get('/login', (req, res, next) => {
-    passport.authenticate('token', function (err, user, info) {
-        if (err) { return next(err); }
-        if (!user) {
-            return res.send('test');
-        }
-        req.logIn(user, function (err) {
-            if (err) {
-                return next(err);
-            }
-            return user.username;
+router.get('/', (req, res, next) => {
+    const { username, password } = req.query;
+    const currentPasswordHash = crypto.createHmac('sha256', password)
+                    .update('I love cupcakes')
+                    .digest('hex');
+    User.findOne({ username: username })
+        .then((req) => {
+            if (username && password) {
+                if (username == req.username && currentPasswordHash == req.password) {
+                    const token = jwt.sign(
+                        { username: username },
+                        process.env.SECRET,
+                        { expiresIn: '240h' },
+                    );
+                    return res.json({token: token});
+                } else {
+                    res.status(403).end();
+                }
+            } else {
+                res.status(400).end();
+            };
         });
-    })(req, res, next);
 });
+
+module.exports = router;
