@@ -20,29 +20,26 @@ router.post('/', (req, res) => {
     const hash = crypto.createHmac('sha256', password)
         .update('I love cupcakes')
         .digest('hex');
-    console.log(hash);
     user.password = hash;
     user.username = username;
 
-    user.save(err => {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
-        return res.json({ success: true });
-    });
+    const token = jwt.sign(
+        { username: username },
+        process.env.SECRET,
+        { expiresIn: '240h' },
+    );
+    user.save()
+    .then(item=>res.json({ token: token }))
+    .catch(err =>  res.status(400).end());
 
 });
-
-
 
 router.get('/', (req, res, next) => {
     const { username, password } = req.query;
     const currentPasswordHash = crypto.createHmac('sha256', password)
-                    .update('I love cupcakes')
-                    .digest('hex');
+        .update('I love cupcakes')
+        .digest('hex');
+
     User.findOne({ username: username })
         .then((req) => {
             if (username && password) {
@@ -52,7 +49,7 @@ router.get('/', (req, res, next) => {
                         process.env.SECRET,
                         { expiresIn: '240h' },
                     );
-                    return res.json({token: token});
+                    return res.json({ token: token });
                 } else {
                     res.status(403).end();
                 }
