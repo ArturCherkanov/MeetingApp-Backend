@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "node --inspect --debug-brk server.js"
+    "dev": "nodemon --inspect server.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +18,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.3.0",
+    "moment": "^2.24.0",
     "mongoose": "^5.3.13",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
