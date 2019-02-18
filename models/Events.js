@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// this will be our data base's data structure 
+// this will be our data base's data structure
 const EventSchema = new Schema(
   {
-    time: String,
+    time: Date,
     message: String
   },
   { timestamps: true }
