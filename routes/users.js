@@ -9,7 +9,12 @@ const middleware = require('../token-middleware');
 const app = express();
 
 router.post('/', (req, res) => {
-    const { username, password } = req.body;
+    const {
+            firstname,
+            lastname,
+            username,
+            password
+             } = req.body;
     const user = new User();
 
     if (!username || !password) {
@@ -20,8 +25,11 @@ router.post('/', (req, res) => {
     const hash = crypto.createHmac('sha256', password)
         .update('I love cupcakes')
         .digest('hex');
+
     user.password = hash;
     user.username = username;
+    user.firstname = firstname;
+    user.lastname = lastname;
 
     const token = jwt.sign(
         { username: username },
