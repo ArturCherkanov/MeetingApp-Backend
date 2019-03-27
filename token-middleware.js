@@ -9,13 +9,13 @@ const checkToken = (req, res, next) => {
     if (token) {
         jwt.verify(token, process.env.SECRET, (err, decoded) => {
             if (err) {
-                return res.status(400).end();
+                return res.status(401).end();
             }
             req.decoded = decoded;
             next();
         });
     }else{
-        return res.status(400).end();
+        return res.status(401).end();
     }
 };
 
