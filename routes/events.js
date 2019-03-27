@@ -82,14 +82,21 @@ router.get('/validate', async (req, res) => {
 
 router.post('/', middleware.checkToken, (req, res) => {
     const event = new Events();
-    const { time, message, isAsyncLoadEvents } = req.body;
+    const Room = new Rooms();
 
-    if (!message || !time) {
+    const { eventData, isAsyncLoadEvents } = req.body;
+    const { date, message, name, room, users } = eventData
+
+    if (!message || !date || !name || !room || !users) {
         return res.status(400).end();
     }
 
+
     event.message = message;
-    event.time = time;
+    event.timeFrom = date.from;
+    event.timeTo = date.to
+    event.users = users;
+    event.name = name;
     event.room = room;
 
     // Rooms.findOne({ name: room })
