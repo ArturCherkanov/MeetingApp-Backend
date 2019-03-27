@@ -65,6 +65,19 @@ router.get('/validate', async (req, res) => {
         }
     ]
     });
+    // .$where('room="1104-1"')
+    // // .lte(exactlyDate.endOf('day').toDate())
+    // .then((events) => {
+    //     events =
+    //     // let  = []
+    //     // let counter = 0;
+    //     // for (var room in rooms) {
+    //     //     if (room.room !== revertRooms)
+    //     //          counter++
+    //     // }
+    //     // let uniqueRooms = unique(rooms.room)
+    //     res.send(rooms)
+    // });
 });
 
 router.post('/', middleware.checkToken, (req, res) => {
@@ -77,6 +90,12 @@ router.post('/', middleware.checkToken, (req, res) => {
 
     event.message = message;
     event.time = time;
+    event.room = room;
+
+    // Rooms.findOne({ name: room })
+    //     .then((data) => {
+    //         Rooms.findOneAndUpdate({ _id: data.id  }, { time: [...data.time, date] });
+    //     });
 
     event.save()
         .then((eventItem) => {
