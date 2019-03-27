@@ -24,6 +24,39 @@ router.get('/', (req, res) => {
         // dateEvents[date] = savedEvents[date];
 
         return res.send({[date]:[...items]});
+router.get('/validate', async (req, res) => {
+    const exactlyDate = moment(req.query.date, moment.defaultFormat);
+    const date = exactlyDate.format('YYYY-MM-DD');
+    // const roomList = [];
+    const { userFrom, userTo } = req.query;
+    const getRoomsFromDB = await Rooms.find();
+    const roomList = getRoomsFromDB.map(elem => elem.name);
+    const getBlockedEventFromDB = await Events.find({
+        $nor: [{
+            $and: [{
+                'timeFrom': {
+                    $gt: userFrom,
+                }
+            },
+            {
+                'timeTo': {
+                    $gt: userTo,
+                }
+            }]
+        },
+        {
+            $and: [{
+                'timeFrom': {
+                    $lt: userFrom,
+                }
+            },
+            {
+                'timeTo': {
+                    $lt: userTo,
+                }
+            }]
+        }
+    ]
     });
 });
 
