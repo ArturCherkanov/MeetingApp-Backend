@@ -67,4 +67,10 @@ router.get('/', (req, res, next) => {
         });
 });
 
+router.get('/list/', (req, res, next) => {
+    User.find()
+        .then(users => { return userList = users.map(user => { return { name: user.firstname, email: user.username } }); })
+        .then(userList => res.send(userList))
+});
+
 module.exports = router;
