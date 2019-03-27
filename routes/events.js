@@ -5,6 +5,7 @@ const moment = require('moment')
 // const assert = require('assert');
 
 const Events = require('../models/Events');
+const Rooms = require('../models/Room');
 
 const savedEvents = [];
 
@@ -65,6 +66,21 @@ router.get('/validate', async (req, res) => {
         }
     ]
     });
+
+const blockedRooms = getBlockedEventFromDB.map((event) => event.room)
+const validatedRoomArray = [...roomList];
+
+blockedRooms.forEach((blockedRoom, i) => {
+    roomList.forEach((room) => {
+        if (blockedRoom === room) {
+            delete validatedRoomArray[i]
+        }
+    })
+})
+
+res.send(validatedRoomArray.filter(item => item))
+
+res.send(blockedRooms);
     // .$where('room="1104-1"')
     // // .lte(exactlyDate.endOf('day').toDate())
     // .then((events) => {
