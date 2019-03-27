@@ -4,7 +4,11 @@ const Schema = mongoose.Schema;
 // this will be our data base's data structure
 const EventSchema = new Schema(
   {
-    time: Date,
+    name: String,
+    users: Array,
+    timeFrom: Date,
+    timeTo: Date,
+    room: String,
     message: String
   },
   { timestamps: true }
