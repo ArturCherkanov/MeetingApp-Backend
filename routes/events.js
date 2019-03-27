@@ -15,15 +15,22 @@ router.get('/', (req, res) => {
 
     // const start = date.startOf('day').toDate()
     // const end = date.endOf('day').toDate()
-    Events.find({'time':{
-        $gte: exactlyDate.startOf('day').toDate(),
-        $lte: exactlyDate.endOf('day').toDate()
-    }}).then(items=>{
+
+    Events.find({
+        'timeFrom': {
+            $gte: exactlyDate.startOf('day').toDate(),
+            $lte: exactlyDate.endOf('day').toDate()
+        }
+    }).then(items => {
+
         // !savedEvents[date]?
         // savedEvents[date]=[...items]:null;
         // dateEvents[date] = savedEvents[date];
 
-        return res.send({[date]:[...items]});
+        return res.send({ [date]: [...items] });
+    });
+});
+
 router.get('/validate', async (req, res) => {
     const exactlyDate = moment(req.query.date, moment.defaultFormat);
     const date = exactlyDate.format('YYYY-MM-DD');
@@ -73,16 +80,16 @@ router.post('/', middleware.checkToken, (req, res) => {
 
     event.save()
         .then((eventItem) => {
-            const choisenDate = moment(time).format('YYYY-MM-DD');
-            if(isAsyncLoadEvents){
-                res.status(201).send({event: eventItem, date: choisenDate})
-            }else{
+            let choisenDate = moment(eventItem.timeFrom).format('YYYY-MM-DD');
+            if (isAsyncLoadEvents) {
+                res.status(201).send({ event: eventItem, date: choisenDate })
+            } else {
                 res.status(201).end()
             }
         })
         .catch(err => {
             if (err)
-            return res.status(400).end();
+                return res.status(400).end();
         });
 });
 
