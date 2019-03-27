@@ -10,11 +10,11 @@ const app = express();
 
 router.post('/', (req, res) => {
     const {
-            firstname,
-            lastname,
-            username,
-            password
-             } = req.body;
+        firstname,
+        lastname,
+        username,
+        password
+    } = req.body;
     const user = new User();
 
     if (!username || !password) {
@@ -37,8 +37,8 @@ router.post('/', (req, res) => {
         { expiresIn: '240h' },
     );
     user.save()
-    .then(item=>res.json({ token: token }))
-    .catch(err =>  res.status(400).end());
+        .then(item => res.json({ token: token }))
+        .catch(err => res.status(400).end());
 
 });
 
