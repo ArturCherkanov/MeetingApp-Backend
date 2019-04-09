@@ -5,6 +5,7 @@ const Room = require('../models/Room')
 
 router.get('/', (req, res) => {
     if (req.params.dateFrom && req.params.dateFrom) {
+        // why false? return []
         return false;
     }
     Room.find()

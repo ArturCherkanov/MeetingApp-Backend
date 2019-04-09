@@ -37,8 +37,10 @@ router.get('/validate', async (req, res) => {
     const date = exactlyDate.format('YYYY-MM-DD');
     // const roomList = [];
     const { userFrom, userTo } = req.query;
+    // It's just a variable - name it as noun, not verb (e.g. allRooms)
     const getRoomsFromDB = await Rooms.find();
     const roomList = getRoomsFromDB.map(elem => elem.name);
+    // The same
     const getBlockedEventFromDB = await Events.find({
         $nor: [{
             $and: [{
@@ -68,6 +70,7 @@ router.get('/validate', async (req, res) => {
     });
 
 const blockedRooms = getBlockedEventFromDB.map((event) => event.room)
+// May be use Array#filter here?
 const validatedRoomArray = [...roomList];
 
 blockedRooms.forEach((blockedRoom, i) => {
@@ -78,6 +81,7 @@ blockedRooms.forEach((blockedRoom, i) => {
     })
 })
 
+// ?? res.send 2 times?
 res.send(validatedRoomArray.filter(item => item))
 
 res.send(blockedRooms);
