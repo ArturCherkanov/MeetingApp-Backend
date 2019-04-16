@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const eventRoutes = require('./events');
-const userRoutes = require('./users');
-const tokenRoutes = require('./token');
+const authRoutes = require('./auth');
+const userRoutes = require('./user');
 const roomsRoutes = require('./rooms');
 
 
 router.use('/events', eventRoutes);
-router.use('/users', userRoutes);
+router.use('/user', userRoutes);
 router.use('/rooms', roomsRoutes);
-router.use('/token', tokenRoutes);
+router.use('/auth', authRoutes);
 
 module.exports = router;
