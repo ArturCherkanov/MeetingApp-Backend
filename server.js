@@ -10,7 +10,6 @@ const app = express();
 const server = require('http').createServer(app)
 const io = require('socket.io')(server);
 const jwt = require('jsonwebtoken');
-
 var connectedUsersStore = {}
 // this is our MongoDB database
 
@@ -43,6 +42,7 @@ io.on('connection', (socket) => {
         socket.join(data.token);
         }
     });
+
 
     socket.on('sendUsers', (req) => {
         req.users.forEach(element => {

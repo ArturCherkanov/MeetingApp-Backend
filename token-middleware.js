@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const checkToken = (req, res, next) => {
     let token = req.headers['x-access-token'] || req.headers['authorization'];
-    if (token&&token.startsWith('Bearer ')) {
+    if (token && token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
     }
     if (token) {
@@ -14,7 +14,7 @@ const checkToken = (req, res, next) => {
             req.decoded = decoded;
             next();
         });
-    }else{
+    } else {
         return res.status(401).end();
     }
 };
