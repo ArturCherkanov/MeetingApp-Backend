@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const middleware = require('../token-middleware');
 const moment = require('moment')
-// const assert = require('assert');
+
 
 const Events = require('../models/Events');
 const Rooms = require('../models/Room');
@@ -12,22 +12,12 @@ const savedEvents = [];
 router.get('/', (req, res) => {
     const exactlyDate = moment(req.query.date, moment.defaultFormat);
     const date = exactlyDate.format('YYYY-MM-DD');
-    const dateEvents = {};
-
-    // const start = date.startOf('day').toDate()
-    // const end = date.endOf('day').toDate()
-
     Events.find({
         'timeFrom': {
             $gte: exactlyDate.startOf('day').toDate(),
             $lte: exactlyDate.endOf('day').toDate()
         }
     }).then(items => {
-
-        // !savedEvents[date]?
-        // savedEvents[date]=[...items]:null;
-        // dateEvents[date] = savedEvents[date];
-
         return res.send({ [date]: [...items] });
     });
 });
@@ -35,7 +25,6 @@ router.get('/', (req, res) => {
 router.get('/validate', async (req, res) => {
     const exactlyDate = moment(req.query.date, moment.defaultFormat);
     const date = exactlyDate.format('YYYY-MM-DD');
-    // const roomList = [];
     const { userFrom, userTo } = req.query;
     // It's just a variable - name it as noun, not verb (e.g. allRooms)
     const getRoomsFromDB = await Rooms.find();
@@ -85,19 +74,7 @@ blockedRooms.forEach((blockedRoom, i) => {
 res.send(validatedRoomArray.filter(item => item))
 
 res.send(blockedRooms);
-    // .$where('room="1104-1"')
-    // // .lte(exactlyDate.endOf('day').toDate())
-    // .then((events) => {
-    //     events =
-    //     // let  = []
-    //     // let counter = 0;
-    //     // for (var room in rooms) {
-    //     //     if (room.room !== revertRooms)
-    //     //          counter++
-    //     // }
-    //     // let uniqueRooms = unique(rooms.room)
-    //     res.send(rooms)
-    // });
+
 });
 
 router.post('/', middleware.checkToken, (req, res) => {
@@ -118,11 +95,6 @@ router.post('/', middleware.checkToken, (req, res) => {
     event.users = users;
     event.name = name;
     event.room = room;
-
-    // Rooms.findOne({ name: room })
-    //     .then((data) => {
-    //         Rooms.findOneAndUpdate({ _id: data.id  }, { time: [...data.time, date] });
-    //     });
 
     event.save()
         .then((eventItem) => {
