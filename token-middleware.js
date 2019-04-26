@@ -11,6 +11,7 @@ const checkToken = (req, res, next) => {
             if (err) {
                 return res.status(401).end();
             }
+
             req.decoded = decoded;
             next();
         });

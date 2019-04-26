@@ -10,6 +10,10 @@ const UserSchema = new Schema(
             unique: true,
             required: true
         },
+        imgData:{
+            type:Object,
+            required: true,
+        },
         lastname:{
             type: String,
             unique: true,

@@ -28,6 +28,8 @@ db.once('open', () => console.log('connected to the database'));
 db.on('error', () => console.error('MongoDB connection error:'));
 const routes = require('./routes');
 
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/api', routes);

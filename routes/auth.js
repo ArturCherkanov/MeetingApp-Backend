@@ -15,7 +15,8 @@ router.post('/', (req, res) => {
         firstname,
         lastname,
         username,
-        password
+        password,
+        imgData,
     } = req.body;
     const user = new User();
 
@@ -30,6 +31,7 @@ router.post('/', (req, res) => {
     user.username = username;
     user.firstname = firstname;
     user.lastname = lastname;
+    user.imgData = imgData;
 
     const token = jwt.sign(
         { username: username },
