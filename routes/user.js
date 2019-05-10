@@ -5,11 +5,16 @@ const middleware = require('../token-middleware');
 const User = require('../models/User');
 
 router.get('/', middleware.checkToken, (req, res) => {
-    res.json({
-        token: true,
-        email: req.decoded.username,
-        photoPath:'https://pp.userapi.com/M4on1Uicd_sK-hAx2kgAPcMPpnzDH7PS8xV_lQ/qqKPA4ZOEXo.jpg?ava=1'
-    });
+    let imgPath;
+    User.findOne({ username: req.decoded.username })
+        .then(user => { imgPath = user.imgData.data.url;
+            res.json({
+                isLoggedIn: true,
+                email: req.decoded.username,
+                photoPath: imgPath,
+            });
+            })
+        .catch(err=>{console.log(err)})
 });
 
 
