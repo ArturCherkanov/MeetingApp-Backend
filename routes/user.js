@@ -20,8 +20,8 @@ router.get('/', middleware.checkToken, (req, res) => {
 
 router.get('/list/', (req, res, next) => {
     User.find()
-        .then(users => { return userList = users.map(user => { return { name: user.firstname, email: user.username } }); })
-        .then(userList => res.send(userList))
+        .then(users => userList = users.map(user => { return { name: user.firstname, email: user.username } }))
+        .then(userList => res.send(userList));
 });
 
 module.exports = router;

@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 
-const hashPassword = require('../utils')
+const hashPassword = require('../utils');
 const User = require('../models/User');
 const middleware = require('../token-middleware');
 const app = express();
@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
     }
 
 
-    const hash = hashPassword(password)
+    const hash = hashPassword(password);
 
     user.password = hash;
     user.username = username;
@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
 
 router.get('/', (req, res, next) => {
     const { username, password } = req.query;
-    const currentPasswordHash = hashPassword(password)
+    const currentPasswordHash = hashPassword(password);
 
     User.findOne({ username: username })
         .then((req) => {
@@ -58,9 +58,9 @@ router.get('/', (req, res, next) => {
                         { expiresIn: '240h' },
                     );
                     return res.json({ token: token });
-                } else {
+                } 
                     res.status(403).end();
-                }
+                
             } else {
                 res.status(400).end();
             };
