@@ -7,7 +7,7 @@ const UserSchema = new Schema(
 
         firstname: {
             type: String,
-            unique: true,
+            unique: false,
             required: true
         },
         imgData:{
@@ -16,7 +16,7 @@ const UserSchema = new Schema(
         },
         lastname:{
             type: String,
-            unique: true,
+            unique: false,
             required: true
           },
         username: {
@@ -27,7 +27,7 @@ const UserSchema = new Schema(
         password: {
             type: String,
             required: true
-        }
+        },
     }
 );
 
